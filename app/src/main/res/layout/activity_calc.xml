@@ -33,8 +33,8 @@
                 android:layout_height="165dp"
                 android:gravity="bottom|right"
                 android:paddingBottom="50dp"
+                android:paddingEnd="10dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:text="567"
                 android:textSize="45sp" />
 
@@ -176,7 +176,7 @@
                 android:textSize="20sp" />
 
             <ImageButton
-                android:id="@+id/3"
+                android:id="@+id/ImageButton3"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
@@ -200,12 +200,12 @@
 
                 <Button
                     android:id="@+id/button10"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center_horizontal|center"
                     android:elegantTextHeight="false"
                     android:text="Clear"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     tools:background="@android:color/holo_blue_light" />
             </LinearLayout>
 
@@ -220,7 +220,7 @@
                 android:textSize="20sp" />
 
             <ImageButton
-                android:id="@+id/4"
+                android:id="@+id/ImageButton4"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
