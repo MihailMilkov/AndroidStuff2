@@ -29,6 +29,8 @@
                 android:paddingRight="10dp"
                 android:text="TextView"
                 android:textSize="45sp" />
+
         </LinearLayout>
+
     </LinearLayout>
 </android.widget.RelativeLayout>
