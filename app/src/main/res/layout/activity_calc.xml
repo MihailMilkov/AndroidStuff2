@@ -30,7 +30,7 @@
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
-                android:layout_height="165dp"
+                android:layout_height="155dp"
                 android:gravity="bottom|right"
                 android:paddingBottom="50dp"
                 android:paddingEnd="10dp"
@@ -237,8 +237,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="283dp"
+        android:layout_marginBottom="300dp"
         android:background="@android:color/transparent"
-        android:paddingTop="155dp"
+        android:paddingEnd="25dp"
+        android:paddingTop="110dp"
         android:src="@drawable/equal" />
 </android.widget.RelativeLayout>
