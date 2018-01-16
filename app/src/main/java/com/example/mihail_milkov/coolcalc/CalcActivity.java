@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import java.util.Stack;
 
 public class CalcActivity extends Activity {
 
@@ -182,5 +183,27 @@ public class CalcActivity extends Activity {
         }
         currentText += number;
         resultsView.setText(currentText);
+//        changeTextSize();
+        calculate();
+    }
+
+//    private void changeTextSize() {
+//        float textSize = resultsView.getTextSize();
+//        int textLen = resultsView.getText().toString().length();
+//        if(textSize > 35 && textLen >= 26){
+//            textSize = textSize - 1;
+//            resultsView.setTextSize(textSize);
+//        }
+//    }
+
+
+    public void infixToPostfix() {
+        String expr = "A+B*C-D*E";
+        Stack<Character> operators = new Stack<Character>();
+
+        for(int i=0; i<expr.length(); i++) {
+
+
+        }
     }
 }
