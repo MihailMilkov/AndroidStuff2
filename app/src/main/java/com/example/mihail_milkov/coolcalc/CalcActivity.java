@@ -21,6 +21,13 @@ public class CalcActivity extends Activity {
     private static final String nine = "9";
     private static final String zero = "0";
 
+    private static final String divide = String.valueOf(Character.toChars(247));
+    private static final String multiply = String.valueOf(Character.toChars(215));
+    private static final String add = "+";
+    private static final String subtract = "-";
+
+
+
 
 
     @Override
@@ -51,7 +58,7 @@ public class CalcActivity extends Activity {
         //Text Views
         resultsView = (TextView) findViewById(R.id.resultsView);
 
-        resultsView.setText("");
+        resultsView.setText("0");
 
         oneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,42 +140,46 @@ public class CalcActivity extends Activity {
         devideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                numberPress(divide);
             }
         });
 
         multiplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                numberPress(multiply);
             }
         });
 
         subtractBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                numberPress(subtract);
             }
         });
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                numberPress(add);
             }
         });
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultsView.setText("");
+                resultsView.setText("0");
             }
         });
 
     }
 
-    void numberPress(String number){
+    private void numberPress(String number){
         String currentText = resultsView.getText().toString();
+        if("0".equals(currentText)){
+            resultsView.setText("");
+            currentText = "";
+        }
         currentText += number;
         resultsView.setText(currentText);
     }
