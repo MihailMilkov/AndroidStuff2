@@ -208,49 +208,58 @@ public class CalcActivity extends Activity {
         int exprLen = expr.length();
 
         for(int i=0; i<expr.length(); i++) {
-            currChar = expr[i];
+            currChar = expr.charAt(i);
             switch (currChar) {
                 case '+':
-                    operatorChar = operators.peek();
-                    if(!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i){
-                        operators.push(currChar);
-                    } else  {
-                        while(!operators.empty()) {
-                            popedChar = operators.pop();
-                            prefixExpr.append(popedChar);
+                    if(!operators.empty()) {
+                        operatorChar = operators.peek();
+                        if (!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i+1) {
+                            operators.push(currChar);
+                        } else {
+                            while (!operators.empty()) {
+                                popedChar = operators.pop();
+                                prefixExpr.append(popedChar);
+                            }
+                            operators.push(currChar);
                         }
+                    } else {
+                        operators.push(currChar);
                     }
                     break;
                 case '-':
-                    operatorChar = operators.peek();
-                    if(!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i){
-                    operators.push(currChar);
-                } else  {
-                    while(!operators.empty()) {
-                        popedChar = operators.pop();
-                        prefixExpr.append(popedChar);
+                    if(!operators.empty()) {
+                        operatorChar = operators.peek();
+                        if (!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i+1) {
+                            operators.push(currChar);
+                        } else {
+                            while (!operators.empty()) {
+                                popedChar = operators.pop();
+                                prefixExpr.append(popedChar);
+                            }
+                            operators.push(currChar);
+                        }
+                    } else {
+                        operators.push(currChar);
                     }
-                }
                     break;
                 case '*':
                     operators.push(currChar);
-                    if(exprLen == i) {
-                        popedChar = operators.pop();
-                        prefixExpr.append(popedChar);
-                    }
                     break;
                 case '/':
                     operators.push(currChar);
-                    if(exprLen == i) {
-                        popedChar = operators.pop();
-                        prefixExpr.append(popedChar);
-                    }
                     break;
                 default:
-                    popedChar = operators.pop();
-                    prefixExpr.append(popedChar);
+                    prefixExpr.append(currChar);
                     break;
             }
+
+            if(exprLen == i+1) {
+                while(!operators.empty()){
+                    popedChar = operators.pop();
+                    prefixExpr.append(popedChar);
+                }
+            }
+            System.out.println(prefixExpr.toString());
         }
     }
 }
