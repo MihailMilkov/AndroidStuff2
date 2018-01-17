@@ -184,7 +184,7 @@ public class CalcActivity extends Activity {
         currentText += number;
         resultsView.setText(currentText);
 //        changeTextSize();
-        calculate();
+        infixToPostfix();
     }
 
 //    private void changeTextSize() {
@@ -199,11 +199,58 @@ public class CalcActivity extends Activity {
 
     public void infixToPostfix() {
         String expr = "A+B*C-D*E";
+        StringBuilder prefixExpr = new StringBuilder("");
+        char currChar;
+        char operatorChar;
+        char popedChar;
         Stack<Character> operators = new Stack<Character>();
 
+        int exprLen = expr.length();
+
         for(int i=0; i<expr.length(); i++) {
-
-
+            currChar = expr[i];
+            switch (currChar) {
+                case '+':
+                    operatorChar = operators.peek();
+                    if(!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i){
+                        operators.push(currChar);
+                    } else  {
+                        while(!operators.empty()) {
+                            popedChar = operators.pop();
+                            prefixExpr.append(popedChar);
+                        }
+                    }
+                    break;
+                case '-':
+                    operatorChar = operators.peek();
+                    if(!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i){
+                    operators.push(currChar);
+                } else  {
+                    while(!operators.empty()) {
+                        popedChar = operators.pop();
+                        prefixExpr.append(popedChar);
+                    }
+                }
+                    break;
+                case '*':
+                    operators.push(currChar);
+                    if(exprLen == i) {
+                        popedChar = operators.pop();
+                        prefixExpr.append(popedChar);
+                    }
+                    break;
+                case '/':
+                    operators.push(currChar);
+                    if(exprLen == i) {
+                        popedChar = operators.pop();
+                        prefixExpr.append(popedChar);
+                    }
+                    break;
+                default:
+                    popedChar = operators.pop();
+                    prefixExpr.append(popedChar);
+                    break;
+            }
         }
     }
 }
