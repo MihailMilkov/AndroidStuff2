@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 public class CalcActivity extends Activity {
 
@@ -27,7 +28,7 @@ public class CalcActivity extends Activity {
     private static final String add = "+";
     private static final String subtract = "-";
 
-
+    Stack<String> postfixExpr = new Stack<String>();
 
 
 
@@ -183,80 +184,69 @@ public class CalcActivity extends Activity {
         }
         currentText += number;
         resultsView.setText(currentText);
-//        changeTextSize();
         infixToPostfix();
     }
 
-//    private void changeTextSize() {
-//        float textSize = resultsView.getTextSize();
-//        int textLen = resultsView.getText().toString().length();
-//        if(textSize > 35 && textLen >= 26){
-//            textSize = textSize - 1;
-//            resultsView.setTextSize(textSize);
-//        }
-//    }
-
-
-    public void infixToPostfix() {
-        String expr = "A+B*C-D*E";
+    public void  infixToPostfix() {
+        String expr = "11+12*13-14*15";
         StringBuilder prefixExpr = new StringBuilder("");
-        char currChar;
-        char operatorChar;
-        char popedChar;
-        Stack<Character> operators = new Stack<Character>();
+        String currToken;
+        String topOperatorTmp;
+        String topOp;
+        Stack<String> operators = new Stack<String>();
 
-        int exprLen = expr.length();
+        StringTokenizer tokenExpr = new StringTokenizer(expr, "+-*/", true);
 
-        for(int i=0; i<expr.length(); i++) {
-            currChar = expr.charAt(i);
-            switch (currChar) {
-                case '+':
+        while(tokenExpr.hasMoreElements()) {
+            currToken = tokenExpr.nextToken();
+            switch (currToken) {
+                case "+":
                     if(!operators.empty()) {
-                        operatorChar = operators.peek();
-                        if (!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i+1) {
-                            operators.push(currChar);
+                        topOperatorTmp = operators.peek();
+                        if (!"*".equals(topOperatorTmp) && !"/".equals(topOperatorTmp) && tokenExpr.hasMoreTokens()) {
+                            operators.push(currToken);
                         } else {
                             while (!operators.empty()) {
-                                popedChar = operators.pop();
-                                prefixExpr.append(popedChar);
+                                topOp = operators.pop();
+                                prefixExpr.append(topOp);
                             }
-                            operators.push(currChar);
+                            operators.push(currToken);
                         }
                     } else {
-                        operators.push(currChar);
+                        operators.push(currToken);
                     }
                     break;
-                case '-':
+                case "-":
                     if(!operators.empty()) {
-                        operatorChar = operators.peek();
-                        if (!"*".equals(Character.toString(operatorChar)) && !"/".equals(Character.toString(operatorChar)) && exprLen != i+1) {
-                            operators.push(currChar);
+                        topOperatorTmp = operators.peek();
+                        if (!"*".equals(topOperatorTmp) && !"/".equals(topOperatorTmp) && tokenExpr.hasMoreTokens()) {
+                            operators.push(currToken);
                         } else {
                             while (!operators.empty()) {
-                                popedChar = operators.pop();
-                                prefixExpr.append(popedChar);
+                                topOp = operators.pop();
+                                prefixExpr.append(topOp);
                             }
-                            operators.push(currChar);
+                            operators.push(currToken);
                         }
                     } else {
-                        operators.push(currChar);
+                        operators.push(currToken);
                     }
                     break;
-                case '*':
-                    operators.push(currChar);
+                case "*":
+                    operators.push(currToken);
                     break;
-                case '/':
-                    operators.push(currChar);
+                case "/":
+                    operators.push(currToken);
                     break;
                 default:
-                    prefixExpr.append(currChar);
+                    prefixExpr.append(currToken);
                     break;
             }
 
-            if(exprLen == i+1) {
+            if(!tokenExpr.hasMoreTokens()) {
                 while(!operators.empty()){
-                    popedChar = operators.pop();
-                    prefixExpr.append(popedChar);
+                    topOp = operators.pop();
+                    prefixExpr.append(topOp);
                 }
             }
             System.out.println(prefixExpr.toString());
