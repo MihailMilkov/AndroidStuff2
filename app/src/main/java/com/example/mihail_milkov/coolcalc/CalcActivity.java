@@ -138,7 +138,8 @@ public class CalcActivity extends Activity {
         calcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                float result = calculate();
+                resultsView.setText(Float.toString(result));
             }
         });
 
@@ -188,7 +189,6 @@ public class CalcActivity extends Activity {
         }
         currentText += number;
         resultsView.setText(currentText);
-        result = calculate();
     }
 
     public float calculate(){
@@ -202,20 +202,20 @@ public class CalcActivity extends Activity {
 
 
 
-      infixToPostfix("ASD");
+      infixToPostfix(resultsView.getText().toString());
       while(postfixExpr.size()>1) {
         topExpr = postfixExpr.pop();
         if(operators.contains(topExpr)) {
             switch (topExpr) {
                 case "+":
-                    rightOp = Float.parseFloat(operands.pop());
-                    leftOp = Float.parseFloat(operands.pop());
+                    rightOp = Float.parseFloat(operands.pop().toString());
+                    leftOp = Float.parseFloat(operands.pop().toString());
                     tmpRes = leftOp + rightOp;
                     postfixExpr.push(Float.toString(tmpRes));
                     break;
                 case "-":
-                    rightOp = Float.parseFloat(operands.pop());
-                    leftOp = Float.parseFloat(operands.pop());
+                    rightOp = Float.parseFloat(operands.pop().toString());
+                    leftOp = Float.parseFloat(operands.pop().toString());
                     tmpRes = leftOp - rightOp;
                     postfixExpr.push(Float.toString(tmpRes));
                     break;
@@ -236,13 +236,14 @@ public class CalcActivity extends Activity {
             operands.push(postfixExpr.pop());
         }
       }
-      finalRes = Float.parseFloat(postfixExpr.pop());
+      finalRes = Float.parseFloat(operands.pop().toString());
 
       return finalRes;
     }
 
     public void  infixToPostfix(String expression) {
-        String expr = "11+12*13-14*15";
+//        String expr = "11+12*13-14*15";
+        String expr = parseExpr(expression);
         StringBuilder prefixExpr = new StringBuilder("");
         String currToken;
         String topOperatorTmp;
@@ -325,5 +326,13 @@ public class CalcActivity extends Activity {
             copyStack.push(postfixExpr.pop());
         }
         postfixExpr =(Stack<String>) copyStack.clone();
+    }
+
+    public String parseExpr (String expression) {
+        String parsedExpr = expression;
+        parsedExpr.replace(divide.charAt(0), '/');
+        parsedExpr.replace(multiply.charAt(0), '*');
+
+        return parsedExpr;
     }
 }
