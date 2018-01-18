@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -178,22 +181,74 @@ public class CalcActivity extends Activity {
 
     private void numberPress(String number){
         String currentText = resultsView.getText().toString();
+        float result = 0;
         if("0".equals(currentText)){
             resultsView.setText("");
             currentText = "";
         }
         currentText += number;
         resultsView.setText(currentText);
-        infixToPostfix();
+        result = calculate();
     }
 
-    public void  infixToPostfix() {
+    public float calculate(){
+      float finalRes = 0;
+      String topExpr;
+      String operators = "+-*/";
+      Stack<String> operands = new Stack<String>();
+      float leftOp = 0;
+      float rightOp = 0;
+      float tmpRes = 0;
+
+
+
+      infixToPostfix("ASD");
+      while(postfixExpr.size()>1) {
+        topExpr = postfixExpr.pop();
+        if(operators.contains(topExpr)) {
+            switch (topExpr) {
+                case "+":
+                    rightOp = Float.parseFloat(operands.pop());
+                    leftOp = Float.parseFloat(operands.pop());
+                    tmpRes = leftOp + rightOp;
+                    postfixExpr.push(Float.toString(tmpRes));
+                    break;
+                case "-":
+                    rightOp = Float.parseFloat(operands.pop());
+                    leftOp = Float.parseFloat(operands.pop());
+                    tmpRes = leftOp - rightOp;
+                    postfixExpr.push(Float.toString(tmpRes));
+                    break;
+                case "*":
+                    rightOp = Float.parseFloat(operands.pop());
+                    leftOp = Float.parseFloat(operands.pop());
+                    tmpRes = leftOp * rightOp;
+                    postfixExpr.push(Float.toString(tmpRes));
+                    break;
+                case "/":
+                    rightOp = Float.parseFloat(operands.pop());
+                    leftOp = Float.parseFloat(operands.pop());
+                    tmpRes = leftOp / rightOp;
+                    postfixExpr.push(Float.toString(tmpRes));
+                    break;
+            }
+        } else {
+            operands.push(postfixExpr.pop());
+        }
+      }
+      finalRes = Float.parseFloat(postfixExpr.pop());
+
+      return finalRes;
+    }
+
+    public void  infixToPostfix(String expression) {
         String expr = "11+12*13-14*15";
         StringBuilder prefixExpr = new StringBuilder("");
         String currToken;
         String topOperatorTmp;
         String topOp;
         Stack<String> operators = new Stack<String>();
+        Stack<String> copyStack = new Stack<String>();
 
         StringTokenizer tokenExpr = new StringTokenizer(expr, "+-*/", true);
 
@@ -208,6 +263,9 @@ public class CalcActivity extends Activity {
                         } else {
                             while (!operators.empty()) {
                                 topOp = operators.pop();
+
+                                postfixExpr.push(topOp);
+
                                 prefixExpr.append(topOp);
                             }
                             operators.push(currToken);
@@ -224,6 +282,9 @@ public class CalcActivity extends Activity {
                         } else {
                             while (!operators.empty()) {
                                 topOp = operators.pop();
+
+                                postfixExpr.push(topOp);
+
                                 prefixExpr.append(topOp);
                             }
                             operators.push(currToken);
@@ -239,6 +300,8 @@ public class CalcActivity extends Activity {
                     operators.push(currToken);
                     break;
                 default:
+                    postfixExpr.push(currToken);
+
                     prefixExpr.append(currToken);
                     break;
             }
@@ -246,10 +309,21 @@ public class CalcActivity extends Activity {
             if(!tokenExpr.hasMoreTokens()) {
                 while(!operators.empty()){
                     topOp = operators.pop();
+
+                    postfixExpr.push(topOp);
+
                     prefixExpr.append(topOp);
                 }
             }
             System.out.println(prefixExpr.toString());
+
+
+
+
         }
+        while(!postfixExpr.empty()) {
+            copyStack.push(postfixExpr.pop());
+        }
+        postfixExpr =(Stack<String>) copyStack.clone();
     }
 }
