@@ -35,6 +35,7 @@ public class CalcActivity extends Activity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +194,7 @@ public class CalcActivity extends Activity {
 
     public float calculate(){
       float finalRes = 0;
-      String topExpr;
+      String topExpr = "";
       String operators = "+-*/";
       Stack<String> operands = new Stack<String>();
       float leftOp = 0;
@@ -203,7 +204,7 @@ public class CalcActivity extends Activity {
 
 
       infixToPostfix(resultsView.getText().toString());
-      while(postfixExpr.size()>1) {
+      while(!postfixExpr.empty()) {
         topExpr = postfixExpr.pop();
         if(operators.contains(topExpr)) {
             switch (topExpr) {
@@ -211,32 +212,32 @@ public class CalcActivity extends Activity {
                     rightOp = Float.parseFloat(operands.pop().toString());
                     leftOp = Float.parseFloat(operands.pop().toString());
                     tmpRes = leftOp + rightOp;
-                    postfixExpr.push(Float.toString(tmpRes));
+                    operands.push(Float.toString(tmpRes));
                     break;
                 case "-":
                     rightOp = Float.parseFloat(operands.pop().toString());
                     leftOp = Float.parseFloat(operands.pop().toString());
                     tmpRes = leftOp - rightOp;
-                    postfixExpr.push(Float.toString(tmpRes));
+                    operands.push(Float.toString(tmpRes));
                     break;
                 case "*":
                     rightOp = Float.parseFloat(operands.pop());
                     leftOp = Float.parseFloat(operands.pop());
                     tmpRes = leftOp * rightOp;
-                    postfixExpr.push(Float.toString(tmpRes));
+                    operands.push(Float.toString(tmpRes));
                     break;
                 case "/":
                     rightOp = Float.parseFloat(operands.pop());
                     leftOp = Float.parseFloat(operands.pop());
                     tmpRes = leftOp / rightOp;
-                    postfixExpr.push(Float.toString(tmpRes));
+                    operands.push(Float.toString(tmpRes));
                     break;
             }
         } else {
-            operands.push(postfixExpr.pop());
+            operands.push(topExpr);
         }
       }
-      finalRes = Float.parseFloat(operands.pop().toString());
+      finalRes = Float.parseFloat(operands.pop());
 
       return finalRes;
     }
@@ -329,10 +330,25 @@ public class CalcActivity extends Activity {
     }
 
     public String parseExpr (String expression) {
-        String parsedExpr = expression;
-        parsedExpr.replace(divide.charAt(0), '/');
-        parsedExpr.replace(multiply.charAt(0), '*');
+        String parsedExpr;
+        StringBuilder expr = new StringBuilder(expression);
+        int ascii;
+        for(int i = 0; i<expr.length(); i++) {
+            ascii = (int) expr.charAt(i);
+            switch(ascii) {
+                case 247:
+                    expr.replace(i, i+1, "/");
+                    break;
+                case 215:
+                    expr.replace(i, i+1, "*");
+                    break;
+                default:
+                    continue;
+            }
+        }
 
+        parsedExpr = expr.toString();
+        System.out.println(parsedExpr);
         return parsedExpr;
     }
 }
